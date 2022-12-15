@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kahoot Bot Loader</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      padding: 20px;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kahoot Bot Loader</h1>
+  <form>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    <label for="room">Room number:</label>
+    <input type="text" id="room" name="room">
+    <label for="bots">Number of bots:</label>
+    <input type="number" id="bots" name="bots">
+    <button type="button" onclick="loadBots()">Load Bots</button>
+  </form>
+  <script>
+    function loadBots() {
+      // Get the values for the name, room number, and number of bots from the form
+      var name = document.getElementById('name').value;
+      var room = document.getElementById('room').value;
+      var numBots = document.getElementById('bots').value;
+
+      // Loop through the number of bots and load each one into the Kahoot game
+      for (var i = 0; i < numBots; i++) {
+        // Generate the name for the bot by appending a number to the user-specified name
+        var botName = name + (i+1);
+
+        // Load the bot with the generated name into the Kahoot game in the specified room number
+        loadBot(room, botName);
+      }
+    }
+
+    function loadBot(gamePin, name) {
+      // Make a POST request to the /api/v1/bots endpoint with the game PIN and bot name
+      fetch('https://create.kahoot.it/api/v1/bots', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          gamePin: gamePin,
+          name: name
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // TODO: Handle the response data here
+      })
+      .catch(error => {
+        // TODO: Handle the error here
+      });
+    }
+  </script>
+</body>
+</html>
